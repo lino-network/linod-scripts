@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# required: https://github.com/sprotheroe/vagrant-disksize
+
+Vagrant.configure(2) do |config|
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://atlas.hashicorp.com/search.
+  config.vm.box = "ubuntu/xenial64"
+  config.disksize.size = '50GB'
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 8096
+    v.cpus = 4
+  end
+
+  config.vm.provision "shell", path: "bootstrap.sh"
+  config.vm.provision "shell", inline: <<-SHELL
+    cp /vagrant/install_linod.sh /home/vagrant/
+    chmod a+x /home/vagrant/install_linod.sh
+  SHELL
+
+end
